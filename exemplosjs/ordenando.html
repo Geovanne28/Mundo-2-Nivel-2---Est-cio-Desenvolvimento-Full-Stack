@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando Valores</title>
+    <script src="ordenando.js" ></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    <!-- 
+        c) Definir um campo de entrada numérico, com o id valor
+        d) Adicionar um botão com texto Adicionar, efetuando a chamada para uma função de nome add no clique
+        e) Definir um campo de seleção com as opções Blubble Sort, Selection Sort e Quick Sort, com Bubble Sort selecionado por padrão
+        f) Adicionar um botão com o texto Ordenar, chamando a função ordenar
+        g) Adicionar um botão com o texto Misturar, chamando a função misturar
+        h) Definir uma lista (ul) com id valores, sem opções internas
+        i) Definir um trecho script, com as funções add, ordenar e misturar, todas no estilo clássico de escrita do Java Script e sem parâmetros
+    -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Ordenando Valores</h1>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                  <label for="">Valor</label>
+                  <input type="number" class="form-control" name="valor" id="valor" value="1">
+                </div>
+                <button onclick="add()" class="btn btn-primary">Adicionar</button>
+                <hr />
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <select class="form-control" name="metodo" id="metodo">
+                        <option value="bubble" selected>Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="quick">Quick Sort</option>
+                    </select>
+                </div>
+                <button onclick="ordenar()" class="btn btn-primary">Ordenar</button>
+                <button onclick="misturar()" class="btn btn-primary">Misturar</button>
+                <hr />
+            </div>
+            <div class="col-12">
+                <ul id="valores"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        function add(){
+            var valor  = document.getElementById('valor').value;
+            if (valor) {
+                var lista = document.getElementById('valores');
+                var node = document.createElement('li');
+                var texto = document.createTextNode(valor);
+                node.appendChild(texto);
+                lista.appendChild(node);
+            }
+        }
+
+        function getValoresLista(){
+            var lista = document.getElementById('valores');
+            var valores = [];
+            for (let index = 0; index < lista.children.length; index++) {
+                const li = lista.children[index];
+                valores.push(eval(li.innerHTML));
+            }
+            return valores;
+        }
+
+        function substituirValoresLista(valores){
+            var lista = document.getElementById('valores');
+            lista.innerHTML = valores.map(function(valor){
+                return '<li>'+valor+'</li>';
+            }).reduce(function(acumulador, valor){
+                return acumulador + valor;
+            });
+        }
+
+        function ordenar(){
+            var valores = getValoresLista();
+            // console.log(valores);
+            if(valores && valores.length > 0){
+                var metodo = document.getElementById('metodo').value;
+                switch (metodo) {
+                    case 'bubble':
+                        valores = bubble_sort(valores);
+                        break;
+                    case 'selection':
+                        valores = selection_sort(valores);
+                        break;
+                    case 'quick':
+                        valores = quick_sort(valores, 0, valores.length-1);
+                        break;
+                }
+                substituirValoresLista(valores);
+            }
+        }
+
+        function misturar(){
+            var valores = getValoresLista();
+            // console.log(valores);
+            if(valores && valores.length > 0){
+                valores = shuffle(valores, 10);
+                // console.log(valores);
+                substituirValoresLista(valores);
+            }
+        }
+    </script>    
+</body>
+</html>

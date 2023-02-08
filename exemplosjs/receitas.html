@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+<body class="container-fluid bg-warning pt-2 pb-2" onload="preencheCatalogo();">
+    <div class="row">
+        <div class="col-12">
+            <div id="pnlCatalogo" class="d-flex flex-wrap justify-content-around">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var receitas = [
+            {
+                titulo: 'Receita 1', 
+                imagem: 'img/receita1.jpg', 
+                preparo: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. In et cum iusto cumque aliquam, reiciendis dolore animi optio, unde reprehenderit vel atque sed aperiam.', 
+                ingredientes: ['Ingrediente 1', 'Ingrediente 2', 'Ingrediente 3']
+            },
+            {
+                titulo: 'Receita 2', 
+                imagem: 'img/receita2.jpg', 
+                preparo: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. In et cum iusto cumque aliquam, reiciendis dolore animi optio, unde reprehenderit vel atque sed aperiam. Nisi autem pariatur nulla magnam labore!', 
+                ingredientes: ['Ingrediente 1', 'Ingrediente 2', 'Ingrediente 3', 'Ingrediente 4', 'Ingrediente 5']
+            },
+            {
+                titulo: 'Receita 3', 
+                imagem: 'img/receita3.jpg', 
+                preparo: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit nisi autem pariatur nulla magnam labore!', 
+                ingredientes: ['Ingrediente 1', 'Ingrediente 2', 'Ingrediente 3', 'Ingrediente 4', 'Ingrediente 5', 'Ingrediente 6']
+            },
+        ]
+
+        function getListaIngredientes(receita){
+            var html = '<ul>';
+            html += receita.ingredientes.map(ingrediente => {
+                return `<li>${ingrediente}</li>`;
+            }).reduce((acumulador, atual) => {
+                return acumulador + atual;
+            });
+            html += '</ul>';
+            return html;
+        }
+
+        function getCard(receita){
+            return `
+                <div class="card " style="width: 250px;">
+                    <img class="card-img-top" src="${receita.imagem}" />
+                    <div class="card-body">
+                        <h3 class="card-title">${receita.titulo}</h3>
+                        <div class="card-text ">
+                            ${getListaIngredientes(receita)}
+                            <hr />
+                            ${receita.preparo}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function preencheCatalogo(){
+            var pnlCatalogo  = document.getElementById('pnlCatalogo');
+            pnlCatalogo.innerHTML = receitas.map(receita => {
+                return getCard(receita);
+            }).reduce((acumulador, atual) => {
+                return acumulador + atual;
+            });
+        }
+    </script>
+</body>
+</html>
